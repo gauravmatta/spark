@@ -22,7 +22,10 @@ public class Main {
 		Logger.getLogger("org.apache").setLevel(Level.WARN);
 		SparkConf conf = new SparkConf().setAppName("First Spark Application").setMaster("local[*]");
 		JavaSparkContext sc = new JavaSparkContext(conf);
-		JavaRDD<Double> myRdd	= sc.parallelize(inputData);		
+		JavaRDD<Double> myRdd	= sc.parallelize(inputData);
+		Double result = myRdd.reduce(Double::sum);
+		myRdd.foreach(value -> System.out.println("Value: " + value));
+		System.out.println("Sum of all values: " + result);
 		myRdd.mapToPair(value -> new Tuple2<>(value, value * 2))
 				.foreach(tuple -> System.out.println("Value: " + tuple._1 + ", Double: " + tuple._2));
 		sc.close();
