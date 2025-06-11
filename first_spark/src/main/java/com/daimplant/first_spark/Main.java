@@ -55,10 +55,11 @@ public class Main {
 		System.out.println("Count Using Map and Reduce: " + countUsingMapReduce);
 		// Count Using Map and Reduce Example
 
-		// MapToPair Operation Example
+		// MapToPair Operation Example with Tuple2
 		myRdd.mapToPair(value -> new Tuple2<>(value, value * 2))
 				.foreach(tuple -> System.out.println("Value: " + tuple._1 + ", Double: " + tuple._2));
-		// MapToPair Operation Example
+		intRdd.mapToPair(value -> new Tuple2<>(value,Math.sqrt(value))).foreach(tuple -> System.out.println("Integer Value: " + tuple._1 + ", Double: " + tuple._2));
+		// MapToPair Operation Example with Tuple2
 
 		sc.close();
 	}
