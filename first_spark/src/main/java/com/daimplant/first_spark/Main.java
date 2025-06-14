@@ -10,6 +10,8 @@ import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 
 import scala.Tuple2;
+import scala.Tuple22;
+import scala.Tuple5;
 
 public class Main {
 
@@ -54,6 +56,23 @@ public class Main {
 		long countUsingMapReduce = sqrtRdd.map(value -> 1L).reduce(Long::sum);
 		System.out.println("Count Using Map and Reduce: " + countUsingMapReduce);
 		// Count Using Map and Reduce Example
+
+		// Tuple2 Example
+		Tuple2<Integer, Double> myTuple = new Tuple2<>(9,3.0);
+		System.out.println("Tuple Value: " + myTuple._1 + ", Tuple Value: " + myTuple._2);
+		// Tuple2 Example
+
+		// Map Operation Example with Tuple2
+		JavaRDD<Tuple2<Integer,Double>> sqrtTupleRdd = intRdd.map(value -> new Tuple2<>(value, Math.sqrt(value)));
+		sqrtTupleRdd.foreach(tuple -> System.out.println("Integer Value: " + tuple._1 + ", Square Root Value: " + tuple._2));
+		// Map Operation Example with Tuple2
+
+		// Tuple22 Example Biggest Tuple in Scala
+		Tuple22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer> tuple22 =	new Tuple22<>(1,2,3,4,5,6,7,8,9,10,
+				11,12,13,14,15,16,17,18,19,20,
+				21,22);
+		System.out.println("Tuple22 Values: " + tuple22);
+		// Tuple22 Example Biggest Tuple in Scala
 
 		// MapToPair Operation Example with Tuple2
 		myRdd.mapToPair(value -> new Tuple2<>(value, value * 2))
