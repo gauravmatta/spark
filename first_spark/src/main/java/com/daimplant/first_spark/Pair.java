@@ -1,5 +1,6 @@
 package com.daimplant.first_spark;
 
+import com.google.common.collect.Iterables;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.spark.SparkConf;
@@ -49,6 +50,15 @@ public class Pair {
                     return new Tuple2<>(level, 1L);
                 }).reduceByKey(Long::sum)
                 .foreach(tuple -> System.out.println("Key: " + tuple._1 + ", Count: " + tuple._2));
+
+        // groupByKey example
+        logRdd.mapToPair(value -> {
+                    String[] columns = value.split(": ", 2);
+                    String level = columns[0];
+                    return new Tuple2<>(level, 1L);
+                })
+                .groupByKey()
+                .foreach(tuple -> System.out.println("Grouped Key: " + tuple._1 + ", Value: " + Iterables.size(tuple._2)));
         sc.close();
     }
 
