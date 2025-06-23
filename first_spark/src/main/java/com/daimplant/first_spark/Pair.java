@@ -41,14 +41,13 @@ public class Pair {
         // Reduce the key-value pairs
         pairRdd.reduceByKey((value1, value2) -> value1 + ", " + value2)
                 .foreach(tuple -> System.out.println("Reduced Key: " + tuple._1 + ", Values: " + tuple._2));
-        
+
         // Count the occurrences of each key
-        JavaPairRDD<String, Long> pairCountRdd = logRdd.mapToPair(value -> {
-            String[] columns = value.split(": ", 2);
-            String level = columns[0];
-            return new Tuple2<>(level, 1L);
-        });
-        pairCountRdd.reduceByKey(Long::sum)
+        logRdd.mapToPair(value -> {
+                    String[] columns = value.split(": ", 2);
+                    String level = columns[0];
+                    return new Tuple2<>(level, 1L);
+                }).reduceByKey(Long::sum)
                 .foreach(tuple -> System.out.println("Key: " + tuple._1 + ", Count: " + tuple._2));
         sc.close();
     }
