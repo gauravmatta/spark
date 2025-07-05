@@ -1,14 +1,41 @@
 package com.daimplant.first_spark;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.JavaSparkContext;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class FlatMaps {
 
     public static void main(String[] args) {
-
+        List<String> inputData = getStrings();
+        Logger.getLogger("org.apache").setLevel(Level.WARN);
+        SparkConf conf = new SparkConf()
+                .setAppName("FlatMap Spark Application")
+                .setMaster("local[*]");
+        try(JavaSparkContext sparkContext = new JavaSparkContext(conf)){
+            JavaRDD<String> sentences = sparkContext.parallelize(inputData);
+            sentences
+                    .map(sentence -> {
+                        System.out.println(sentence);
+                        return sentence;
+                    }) // Print each sentence
+            .flatMap(value -> {
+                String[] words = value.split(" ");
+                List<String> wordList = new ArrayList<>(Arrays.asList(words));
+                return wordList.iterator();
+            })
+            .filter(word -> word.length() > 3) // Filter words longer than 3 characters
+            .foreach(word -> System.out.println("Word: " + word));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static @NotNull List<String> getStrings() {
