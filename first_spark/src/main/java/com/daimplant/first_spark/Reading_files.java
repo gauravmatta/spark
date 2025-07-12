@@ -17,7 +17,7 @@ public class Reading_files {
                 .setMaster("local[*]");
         try (JavaSparkContext sparkContext = new JavaSparkContext(conf)) {
             // Read a text file from the local filesystem
-            JavaRDD<String> lines = sparkContext.textFile("src/main/resources/subtitles/300.txt");
+            JavaRDD<String> lines = sparkContext.textFile("src/main/resources/subtitles/300.srt");
 
             lines.map(line ->{
                 System.out.println("Line: " + line);

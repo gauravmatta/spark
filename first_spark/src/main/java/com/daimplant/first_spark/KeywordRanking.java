@@ -17,7 +17,7 @@ public class KeywordRanking {
         SparkConf conf = new SparkConf().setAppName("Reading Files Spark Application").setMaster("local[*]");
         try (JavaSparkContext sparkContext = new JavaSparkContext(conf)) {
             // Read a text file from the local filesystem
-            JavaRDD<String> initialRdd = sparkContext.textFile("src/main/resources/subtitles/300.txt");
+            JavaRDD<String> initialRdd = sparkContext.textFile("src/main/resources/subtitles/300.srt");
             JavaRDD<String> lettersOnlyRdd = initialRdd.map(sentence -> sentence
                     .replaceAll("[^a-zA-Z\\s]", "")
                     .toLowerCase().trim());
