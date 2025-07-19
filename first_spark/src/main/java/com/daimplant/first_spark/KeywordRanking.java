@@ -28,8 +28,21 @@ public class KeywordRanking {
             JavaPairRDD<String, Long> totals = pairRDD.reduceByKey(Long::sum);
             JavaPairRDD<Long,String> switched = totals.mapToPair(tuple -> new Tuple2<>(tuple._2, tuple._1));
             JavaPairRDD<Long, String> sorted = switched.sortByKey(false);
+
+            System.out.println("There are "+sorted.getNumPartitions()+" partitions in the RDD.");
+
             List<Tuple2<Long, String>> results = sorted.take(10);
             results.forEach(System.out::println);
+
+            System.out.println("Sort Output without Coalesce:");
+            sorted.foreach(item -> System.out.println(item._2 + ": " + item._1));
+
+            // Coalesce to reduce the number of partitions to 1 for proper output
+            sorted = sorted.coalesce(1);
+            System.out.println("Coalesce and Sort Output:");
+            sorted.foreach(item -> System.out.println(item._2 + ": " + item._1));
+
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
