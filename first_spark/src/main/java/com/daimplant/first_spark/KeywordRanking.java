@@ -12,9 +12,18 @@ import java.util.List;
 
 public class KeywordRanking {
     public static void main(String[] args) {
-        System.setProperty("hadoop.home.dir", "C:\\hadoop\\winutils");
+
+        // Uncomment the following line if running on Windows with Hadoop winutils
+//        System.setProperty("hadoop.home.dir", "C:\\hadoop\\winutils");
+
         Logger.getLogger("org.apache").setLevel(Level.WARN);
-        SparkConf conf = new SparkConf().setAppName("Reading Files Spark Application").setMaster("local[*]");
+
+        // Uncomment the following line to run in local mode with all available cores
+//        SparkConf conf = new SparkConf().setAppName("Reading Files Spark Application").setMaster("local[*]");
+
+        // Use the following line to run in cluster mode or with a specific master
+        SparkConf conf = new SparkConf().setAppName("Reading Files Spark Application").setMaster("spark://fedora:7077");
+
         try (JavaSparkContext sparkContext = new JavaSparkContext(conf)) {
             // Read a text file from the local filesystem
             JavaRDD<String> initialRdd = sparkContext.textFile("src/main/resources/subtitles/300.srt");
